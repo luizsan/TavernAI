@@ -277,10 +277,10 @@ body {
 	/* background: #13152c; */
 	/* width: 67px; */
 	/* height: 103px; */
-	width: 64px;
+	width: 48px;
 	height: 64px;
 	border-style: none;
-	padding:6px;
+	padding: 2px;
 	/* padding-bottom:20px; */
 }
 
@@ -558,7 +558,7 @@ input[type=button] {
 }
 
 .character_select .avatar{
-	width: 48px;
+	width: 36px;
 	height: 48px;
 }
 
