@@ -3,7 +3,7 @@ Examples of interface and output:
 <br><img src="readme/1.png" height="200" /><img src="readme/4.png" height="200" /><img src="readme/5.png" height="200" />
 
 [@@@Download TavernAI@@@](https://github.com/TavernAI/TavernAI/archive/refs/heads/main.zip) (Last version)<br><br>
-[TavernAI Discrod](https://discord.gg/zmK2gmr45t)<br>
+[TavernAI Discord](https://discord.gg/zmK2gmr45t)<br>
 [TavetnAI Boosty](https://boosty.to/tavernai) (A common online database with characters is currently being developed)<br>
 ## Features
 * Creating characters with personality setup
@@ -23,7 +23,7 @@ Examples of interface and output:
 ### Briefly:
 1. Download [TavernAI](https://github.com/TavernAI/TavernAI/archive/refs/heads/main.zip)
 2. Install [Node.js v19.1.0](https://nodejs.org/download/release/v19.1.0/)
-3. Run Start.bat (or use command: *node server.js*)
+3. Run Start.bat (or use command: *npm install*, *node server.js*)
 ## AI Models
 * [KoboldAI](https://github.com/KoboldAI/KoboldAI-Client)
 * [NovelAI](https://novelai.net/)
