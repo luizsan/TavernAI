@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 const readline = require('readline');
+const open = require('open');
 
 var rimraf = require("rimraf");
 const multer  = require("multer");
@@ -40,8 +41,8 @@ var api_key_novel;
 
 var is_colab = false;
 
-const jsonParser = express.json();
-const urlencodedParser = express.urlencoded({extended: false});
+const jsonParser = express.json({limit: '100mb'});
+const urlencodedParser = express.urlencoded({extended: true, limit: '100mb'});
 
 
 
@@ -69,8 +70,29 @@ app.post("/getlastversion", jsonParser, function(request, response_getlastversio
         
 
 });
-app.use(express.static(__dirname + "/public"));
-
+app.use(express.static(__dirname + "/public", { refresh: true }));
+app.use('/backgrounds', (req, res) => {
+  const filePath = path.join(process.cwd(), 'public/backgrounds', req.url);
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.status(404).send('File not found');
+      return;
+    }
+    //res.contentType('image/jpeg');
+    res.send(data);
+  });
+});
+app.use('/characters', (req, res) => {
+  const filePath = path.join(process.cwd(), 'public/characters', req.url);
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.status(404).send('File not found');
+      return;
+    }
+    //res.contentType('image/jpeg');
+    res.send(data);
+  });
+});
 app.use(multer({dest:"uploads"}).single("avatar"));
 app.get("/", function(request, response){
     response.sendFile(__dirname + "/public/index.html"); 
@@ -139,7 +161,7 @@ app.post("/generate", jsonParser, function(request, response_generate = response
             response_generate.send({error: true});
         }
     }).on('error', function (err) {
-        //console.log('');
+        console.log(err);
 	//console.log('something went wrong on the request', err.request.options);
         response_generate.send({error: true});
     });
@@ -227,11 +249,7 @@ app.post("/getchat", jsonParser, function(request, response){
 });
 app.post("/getstatus", jsonParser, function(request, response_getstatus = response){
     if(!request.body) return response_getstatus.sendStatus(400);
-    if(is_colab === true){
-        api_server = '127.0.0.1:5000';
-    }else{
-        api_server = request.body.api_server;
-    }
+    api_server = request.body.api_server;
     if(api_server.indexOf('localhost') != -1){
         api_server = api_server.replace('localhost','127.0.0.1');
     }
@@ -384,7 +402,7 @@ async function charaWrite(img_url, data, name, response = undefined, mes = 'ok')
     try {
         // Load the image in any format
         sharp.cache(false);
-        var image = await sharp(img_url).resize(170, 234).toFormat('png').toBuffer();
+        var image = await sharp(img_url).resize(400, 600).toFormat('png').toBuffer();// old 170 234
         // Convert the image to PNG format
         //const pngImage = image.toFormat('png');
 
@@ -484,8 +502,11 @@ app.post("/getbackgrounds", jsonParser, function(request, response){
     
 });
 app.post("/iscolab", jsonParser, function(request, response){
-
-    response.send({is_colab:is_colab});
+    let send_data = false;
+    if(process.env.colaburl !== undefined){
+        send_data = String(process.env.colaburl).trim();
+    }
+    response.send({colaburl:send_data});
     
 });
 app.post("/getuseravatars", jsonParser, function(request, response){
@@ -941,6 +962,7 @@ app.post("/importchat", urlencodedParser, function(request, response){
                                 new_chat[i]['name'] = ch_name;
                             }
                             new_chat[i]['is_user'] = item.src.is_human;
+                            new_chat[i]['is_name'] = true;
                             new_chat[i]['send_date'] = Date.now();
                             new_chat[i]['mes'] = item.text;
                             i++;
@@ -1008,6 +1030,8 @@ app.listen(server_port, function() {
             is_colab = true;
         }
     }
+    console.log('Launching...');
+    open('http:127.0.0.1:'+server_port);
     console.log('TavernAI started: http://127.0.0.1:'+server_port);
     if (fs.existsSync('public/characters/update.txt')) { //&& !is_colab <- this need to put again
         convertStage1();
