@@ -19,7 +19,7 @@ body {
 
 body {
     color: rgb(229, 224, 216);
-    font-family:  "Segoe UI", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    /* font-family:  "Segoe UI", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; */
     /* font: 1em 'Open Sans', sans-serif; */
     background-color: #f1f1f1;
 }
