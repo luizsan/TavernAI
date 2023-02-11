@@ -1818,6 +1818,15 @@
                     Generate('regenerate');
                 }
             });
+
+            function RegenShortcut(input){
+                if(input.ctrlKey && input.keyCode == 32){
+                    Generate("regenerate");
+                }
+            }
+
+            document.addEventListener('keydown', RegenShortcut, false);
+
             $( "#option_delete_mes" ).click(function() {
                 if(this_chid != undefined && !is_send_press){
                     $('#dialogue_del_mes').css('display','block');
@@ -2702,31 +2711,7 @@
     </div>
     <!--<div id="shadow_character_popup">
         </div>-->
-        <div id="character_popup">
-            
-
-            
-            
-            <div id="personality_div">
-                <h4>Personality summary</h4><h5>A brief description of the personality (<a href="/notes/2" target="_blank">?</a>)</h5>
-                <input id="personality_textarea" name="personality" placeholder="" form="form_create" class="text_pole" autocomplete="off">
-            </div>
-            
-            <div id="scenario_div">
-                <h4>Scenario</h4>
-                <h5>Circumstances and context of the dialogue</h5>
-                <input id="scenario_pole" name="scenario" class="text_pole" maxlength="999" size="40" value="" autocomplete="off" form="form_create">
-            </div>
-            
-            <div id="mes_example_div">
-                <h4>Examples of dialogue</h4>
-                <h5>Forms a personality more clearly (<a href="/notes/11" target="_blank">?</a>)</h5>
-            </div>
-            <textarea id="mes_example_textarea" name="mes_example" placeholder="" form="form_create"></textarea>
-            
-            
-            <div id="character_popup_ok" class="menu_button">Save</div>
-            <div></div>
+        <div id="character_popup"></div>
             
     </div>
     <div id="shadow_select_chat_popup">
